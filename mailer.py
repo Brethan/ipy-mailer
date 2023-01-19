@@ -5,18 +5,15 @@ import json
 
 from subprocess import check_output
 
-def connect(host="http://google.com"):
+def check_internet_connection(host="http://google.com"):
     try:
         print(f"Pinging {host}:")
         ur.urlopen(host)
         return True
     except:
-        print("Connection failed... trying again")
         return False
 
-
-
-def sendmail(data, content):
+def send_email(data, content):
     PORT = 587
     SERVER = "smtp.gmail.com"
     PASSWORD = data["app_pw"]
@@ -42,20 +39,26 @@ def sendmail(data, content):
     session.quit
 
 
-print("Checking if client has an internet connection:")
-while not connect():
-    time.sleep(3)
+def main():
+    print("Checking if client has an internet connection:")
+    tries = 60
+    while not check_internet_connection() and tries >= 0:
+        time.sleep(3)
 
 
-with open("config.json", 'r') as j:
-    data =  json.loads(j.read())
-    ip_address = check_output(["hostname", "-I"]).decode("utf-8").split(" ")[0]
-    content ="This is the IP address of your raspberry pi: " + ip_address
+    with open("config.json", 'r') as j:
+        data =  json.loads(j.read())
+        ip_address = check_output(["hostname", "-I"]).decode("utf-8").split(" ")[0]
+        content ="This is the IP address of your raspberry pi: " + ip_address
 
-    print(f"Internet connection confirmed ({ip_address}), proceeding to send email: ")
+        print(f"Internet connection confirmed ({ip_address}), proceeding to send email: ")
 
-    try:
-        sendmail(data, content)
-        print("Email sent successfully")
-    except:
-        print("Something went wrong and the email could not be sent")
+        try:
+            send_email(data, content)
+            print("Email sent successfully")
+        except:
+            print("Something went wrong and the email could not be sent")
+
+
+if __name__ == "__main__":
+    main()
