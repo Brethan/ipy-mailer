@@ -11,7 +11,7 @@ Connection to the RPi is much faster if the ip address is known ahead of time, h
 
 In a previous semester, one of the TAs for the course created a script to display the ip address of the RPi on the provided Sense Hat. The problem with this approach is that I am both not that great at quickly reading scrolling numbers, I am also kind of impatient and did not want to have to slow down the scroll speed of the ip address across the Sense Hat.
 
-And so ipy ( mailer) mailer was born 
+And so ipy mailer was born 
 
 ## How to use
 
